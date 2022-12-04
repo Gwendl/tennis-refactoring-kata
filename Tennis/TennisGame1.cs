@@ -42,13 +42,11 @@ namespace Tennis
 
         private string EstablishEndGameScore()
         {
-            string score;
-            var minusResult = player1Score - player2Score;
-            if (minusResult == 1) score = "Advantage player1";
-            else if (minusResult == -1) score = "Advantage player2";
-            else if (minusResult >= 2) score = "Win for player1";
-            else score = "Win for player2";
-            return score;
+            var scoreDelta = player1Score - player2Score;
+            if (scoreDelta == 1) return "Advantage player1";
+            if (scoreDelta == -1) return "Advantage player2";
+            if (scoreDelta >= 2) return "Win for player1";
+            return "Win for player2";
         }
 
         private string EstablishDrawScore()
