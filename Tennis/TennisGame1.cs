@@ -2,47 +2,46 @@ namespace Tennis
 {
     public class TennisGame1 : ITennisGame
     {
-        private int player1Score = 0;
-        private int player2Score = 0;
-        private string player1Name;
-        private string player2Name;
+        private readonly Player Player1;
+        private readonly Player Player2;
 
         public TennisGame1(string player1Name, string player2Name)
         {
-            this.player1Name = player1Name;
-            this.player2Name = player2Name;
+            this.Player1 = new Player(player1Name, 0);
+            this.Player2 = new Player(player2Name, 0);
         }
 
         public void WonPoint(string playerName)
         {
-            if (playerName == "player1")
-                player1Score += 1;
-            else
-                player2Score += 1;
+            GetPlayerByName(playerName).ScoreAPoint();
         }
 
         public string GetScore()
         {
-            if (player1Score == player2Score)
+            if (Player1.GetScore() == Player2.GetScore())
             {
                 return EstablishDrawScore();
             }
-            if (player1Score >= 4 || player2Score >= 4)
+            if (Player1.GetScore() >= 4 || Player2.GetScore() >= 4)
             {
                 return EstablishEndGameScore();
             }
             return EstablishNormalScore();
         }
 
-        private string EstablishNormalScore()
+        private Player GetPlayerByName(string name)
         {
-            return $"{GetScoreName(player1Score)}-{GetScoreName(player2Score)}";
+            return name == "player1" ? Player1 : Player2;
         }
 
+        private string EstablishNormalScore()
+        {
+            return $"{GetScoreName(Player1.GetScore())}-{GetScoreName(Player2.GetScore())}";
+        }
 
         private string EstablishEndGameScore()
         {
-            var scoreDelta = player1Score - player2Score;
+            var scoreDelta = Player1.GetScore() - Player2.GetScore();
             if (scoreDelta == 1) return "Advantage player1";
             if (scoreDelta == -1) return "Advantage player2";
             if (scoreDelta >= 2) return "Win for player1";
@@ -51,7 +50,7 @@ namespace Tennis
 
         private string EstablishDrawScore()
         {
-            return player1Score switch
+            return Player1.GetScore() switch
             {
                 0 => "Love-All",
                 1 => "Fifteen-All",
