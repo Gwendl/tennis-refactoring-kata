@@ -6,19 +6,29 @@ namespace Tennis
     {
         public IScoreResult GetScore(Player player1, Player player2)
         {
-            int player1Score = player1.GetScore();
-            int player2Score = player2.GetScore();
-            if (player1Score == player2Score)
+            if (player1.IsTieWith(player2))
             {
-                return new TieScoreResult(player1Score, player2Score);
+                return new TieScoreResult(player1.GetScore(), player2.GetScore());
             }
-            if (player1Score >= 4 || player2Score >= 4)
+            if (APlayerHasWon(player1, player2))
             {
-                if (Math.Abs(player1Score - player2Score) >= 2)
-                    return new WinScoreResult(player1Score, player2Score);
-                return new AdvantageScoreResult(player1Score, player2Score);
+                return new WinScoreResult(player1.GetScore(), player2.GetScore());
             }
-            return new NormalScoreResult(player1Score, player2Score);
+            if (IsAdvantageSituation(player1, player2))
+            {
+                return new AdvantageScoreResult(player1.GetScore(), player2.GetScore());
+            }
+
+            return new NormalScoreResult(player1.GetScore(), player2.GetScore());
+        }
+
+        private bool IsAdvantageSituation(Player player1, Player player2)
+            => player1.GetScore() >= 4 || player2.GetScore() >= 4;
+
+        private bool APlayerHasWon(Player player1, Player player2)
+        {
+            int scoreDelta = Math.Abs(player1.GetScore() - player2.GetScore());
+            return IsAdvantageSituation(player1, player2) && scoreDelta >= 2;
         }
     }
 }
