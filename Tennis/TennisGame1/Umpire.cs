@@ -1,4 +1,6 @@
-﻿namespace Tennis
+﻿using System;
+
+namespace Tennis
 {
     sealed class Umpire
     {
@@ -12,7 +14,9 @@
             }
             if (player1Score >= 4 || player2Score >= 4)
             {
-                return new EndgameScoreResult(player1Score, player2Score);
+                if (Math.Abs(player1Score - player2Score) >= 2)
+                    return new WinScoreResult(player1Score, player2Score);
+                return new AdvantageScoreResult(player1Score, player2Score);
             }
             return new NormalScoreResult(player1Score, player2Score);
         }

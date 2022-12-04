@@ -54,18 +54,34 @@ namespace Tennis
         }
     }
 
-    sealed class EndgameScoreResult : AScoreResult
+    sealed class AdvantageScoreResult : AScoreResult
     {
-        public EndgameScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
+        public AdvantageScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
         {
         }
 
         public override string ReadScore()
         {
-            var scoreDelta = player1Score - player2Score;
-            if (scoreDelta == 1) return "Advantage player1";
-            if (scoreDelta == -1) return "Advantage player2";
-            if (scoreDelta >= 2) return "Win for player1";
+            if (player1Score > player2Score)
+            {
+                return "Advantage player1";
+            }
+            return "Advantage player2";
+        }
+    }
+
+    sealed class WinScoreResult : AScoreResult
+    {
+        public WinScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
+        {
+        }
+
+        public override string ReadScore()
+        {
+            if (player1Score > player2Score)
+            {
+                return "Win for player1";
+            }
             return "Win for player2";
         }
     }
