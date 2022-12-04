@@ -36,31 +36,9 @@ namespace Tennis
 
         private string EstablishNormalScore()
         {
-            var score = "";
-            for (var i = 1; i < 3; i++)
-            {
-                int tempScore;
-                if (i == 1) tempScore = player1Score;
-                else { score += "-"; tempScore = player2Score; }
-                switch (tempScore)
-                {
-                    case 0:
-                        score += "Love";
-                        break;
-                    case 1:
-                        score += "Fifteen";
-                        break;
-                    case 2:
-                        score += "Thirty";
-                        break;
-                    case 3:
-                        score += "Forty";
-                        break;
-                }
-            }
-
-            return score;
+            return $"{GetScoreName(player1Score)}-{GetScoreName(player2Score)}";
         }
+
 
         private string EstablishEndGameScore()
         {
@@ -94,6 +72,17 @@ namespace Tennis
             }
 
             return score;
+        }
+
+        private static string GetScoreName(int score)
+        {
+            return score switch
+            {
+                0 => "Love",
+                1 => "Fifteen",
+                2 => "Thirty",
+                _ => "Forty",
+            };
         }
     }
 }
