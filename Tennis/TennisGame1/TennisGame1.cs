@@ -20,7 +20,7 @@ namespace Tennis
 
         public string GetScore()
         {
-            return Umpire.GetScore(Player1, Player2);
+            return Umpire.GetScore(Player1, Player2).ReadScore();
         }
 
         private Player GetPlayerByName(string name)
