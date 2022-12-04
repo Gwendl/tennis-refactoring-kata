@@ -8,18 +8,18 @@ namespace Tennis
         {
             if (player1.IsTieWith(player2))
             {
-                return new TieScoreResult(player1.GetScore(), player2.GetScore());
+                return new TieScoreResult(player1, player2);
             }
             if (APlayerHasWon(player1, player2))
             {
-                return new WinScoreResult(player1.GetScore(), player2.GetScore());
+                return new WinScoreResult(player1, player2);
             }
             if (IsAdvantageSituation(player1, player2))
             {
-                return new AdvantageScoreResult(player1.GetScore(), player2.GetScore());
+                return new AdvantageScoreResult(player1, player2);
             }
 
-            return new NormalScoreResult(player1.GetScore(), player2.GetScore());
+            return new NormalScoreResult(player1, player2);
         }
 
         private bool IsAdvantageSituation(Player player1, Player player2)

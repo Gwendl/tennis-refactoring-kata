@@ -21,6 +21,8 @@
         public bool IsTieWith(Player other) => Score == other.Score;
 
         public bool IsOnePointAheadOf(Player other) => Score - other.Score == 1;
+
+        public bool IsAheadOf(Player other) => Score > other.Score;
     }
 }
 

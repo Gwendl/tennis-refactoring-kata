@@ -11,15 +11,15 @@ namespace Tennis
         public string ReadScore();
     }
 
-    public abstract class AScoreResult: IScoreResult
+    internal abstract class AScoreResult: IScoreResult
     {
-        protected readonly int player1Score;
-        protected readonly int player2Score;
+        protected readonly Player Player1;
+        protected readonly Player Player2;
 
-        protected AScoreResult(int player1Score, int player2Score)
+        public AScoreResult(Player player1, Player player2)
         {
-            this.player1Score = player1Score;
-            this.player2Score = player2Score;
+            Player1 = player1;
+            Player2 = player2;
         }
 
         public abstract string ReadScore();
@@ -38,13 +38,13 @@ namespace Tennis
 
     sealed class TieScoreResult : AScoreResult
     {
-        public TieScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
+        public TieScoreResult(Player player1, Player player2) : base(player1, player2)
         {
         }
 
         public override string ReadScore()
         {
-            return player1Score switch
+            return Player1.GetScore() switch
             {
                 0 => "Love-All",
                 1 => "Fifteen-All",
@@ -56,45 +56,45 @@ namespace Tennis
 
     sealed class AdvantageScoreResult : AScoreResult
     {
-        public AdvantageScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
+        public AdvantageScoreResult(Player player1, Player player2) : base(player1, player2)
         {
         }
 
         public override string ReadScore()
         {
-            if (player1Score > player2Score)
+            if (Player1.IsOnePointAheadOf(Player2))
             {
-                return "Advantage player1";
+                return $"Advantage {Player1.Name}";
             }
-            return "Advantage player2";
+            return $"Advantage {Player2.Name}";
         }
     }
 
     sealed class WinScoreResult : AScoreResult
     {
-        public WinScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
+        public WinScoreResult(Player player1, Player player2) : base(player1, player2)
         {
         }
 
         public override string ReadScore()
         {
-            if (player1Score > player2Score)
+            if (Player1.IsAheadOf(Player2))
             {
-                return "Win for player1";
+                return $"Win for {Player1.Name}";
             }
-            return "Win for player2";
+            return $"Win for {Player2.Name}";
         }
     }
 
     sealed class NormalScoreResult : AScoreResult
     {
-        public NormalScoreResult(int player1Score, int player2Score) : base(player1Score, player2Score)
+        public NormalScoreResult(Player player1, Player player2) : base(player1, player2)
         {
         }
 
         public override string ReadScore()
         {
-            return $"{GetScoreName(player1Score)}-{GetScoreName(player2Score)}";
+            return $"{GetScoreName(Player1.GetScore())}-{GetScoreName(Player2.GetScore())}";
         }
     }
 }
